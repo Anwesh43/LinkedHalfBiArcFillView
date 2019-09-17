@@ -21,7 +21,7 @@ val sizeFactor : Float = 2.9f
 val offColor : Int = Color.parseColor("#1565C0")
 val onColor : Int = Color.parseColor("#f44336")
 val backColor : Int = Color.parseColor("#BDBDBD")
-val delay : Long = 30
+val delay : Long = 5
 
 fun Int.inverse() : Float = 1f / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
@@ -38,7 +38,7 @@ fun Canvas.drawHalfBiArcFill(i : Int, size : Float, sc : Float, paint : Paint) {
     paint.color = offColor
     drawRect(RectF(-size, size * sci, size, size), paint)
     paint.color = onColor
-    drawRect(RectF(-size, size, size, size * sci), paint)
+    drawRect(RectF(-size, 0f, size, size * sci), paint)
     restore()
     restore()
 }
@@ -179,7 +179,12 @@ class HalfBiArcFillView(ctx : Context) : View(ctx) {
         }
 
         fun update(cb : (Float) -> Unit) {
-            curr.update(cb)
+            curr.update {
+                curr = curr.getNext(dir) {
+                    dir *= -1
+                }
+                cb(it)
+            }
         }
 
         fun startUpdating(cb : () -> Unit) {
@@ -214,7 +219,7 @@ class HalfBiArcFillView(ctx : Context) : View(ctx) {
         fun create(activity : Activity) : HalfBiArcFillView {
             val view : HalfBiArcFillView = HalfBiArcFillView(activity)
             activity.setContentView(view)
-            return view 
+            return view
         }
     }
 }
