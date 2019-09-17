@@ -166,4 +166,23 @@ class HalfBiArcFillView(ctx : Context) : View(ctx) {
             return this
         }
     }
+
+    data class HalfBiArcFill(var i : Int) {
+
+        private val root : HBAFNode = HBAFNode(0)
+        private var curr : HBAFNode = root
+        private var dir : Int = 1
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            root.draw(canvas, paint)
+        }
+
+        fun update(cb : (Float) -> Unit) {
+            curr.update(cb)
+        }
+
+        fun startUpdating(cb : () -> Unit) {
+            curr.startUpdating(cb)
+        }
+    }
 }
