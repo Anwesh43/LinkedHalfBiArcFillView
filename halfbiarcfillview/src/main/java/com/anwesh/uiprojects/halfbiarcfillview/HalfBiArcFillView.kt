@@ -185,4 +185,26 @@ class HalfBiArcFillView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : HalfBiArcFillView) {
+
+        private val animator : Animator = Animator(view)
+        private val hbaf : HalfBiArcFill = HalfBiArcFill(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(backColor)
+            hbaf.draw(canvas, paint)
+            animator.animate {
+                hbaf.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            hbaf.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
