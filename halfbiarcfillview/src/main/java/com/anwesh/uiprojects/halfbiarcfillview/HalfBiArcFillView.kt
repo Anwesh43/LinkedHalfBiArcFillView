@@ -208,4 +208,13 @@ class HalfBiArcFillView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : HalfBiArcFillView {
+            val view : HalfBiArcFillView = HalfBiArcFillView(activity)
+            activity.setContentView(view)
+            return view 
+        }
+    }
 }
